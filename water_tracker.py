@@ -8,6 +8,7 @@ import os
 import requests
 from plyer import notification
 import calendar
+import sv_ttk
 
 
 class WaterTracker:
@@ -15,7 +16,7 @@ class WaterTracker:
         self.root = tk.Tk()
         self.root.title("Трекер воды")
         self.root.geometry("900x700")
-        self.root.configure(bg='#f0f8ff')
+        sv_ttk.set_theme('light')
         
         # Database initialization
         self.init_database()
@@ -110,38 +111,38 @@ class WaterTracker:
         """Create graphical user interface"""
         # Create tabs
         notebook = ttk.Notebook(self.root)
-        notebook.pack(fill='both', expand=True, padx=10, pady=10)
+        notebook.pack(fill='both', expand=True)
         
         # Main tracker tab
-        self.main_frame = ttk.Frame(notebook)
+        self.main_frame = tttk.Frame(notebook)
         notebook.add(self.main_frame, text='Трекер')
         self.create_main_tab()
         
         # Calendar tab
-        self.calendar_frame = ttk.Frame(notebook)
+        self.calendar_frame = tttk.Frame(notebook)
         notebook.add(self.calendar_frame, text='Календарь')
         self.create_calendar_tab()
         
         # Settings tab
-        self.settings_frame = ttk.Frame(notebook)
+        self.settings_frame = tttk.Frame(notebook)
         notebook.add(self.settings_frame, text='Настройки')
         self.create_settings_tab()
         
     def create_main_tab(self):
         """Create main tracker tab"""
         # Title
-        title_label = tk.Label(self.main_frame, text="💧 Трекер воды", 
-                              font=('Arial', 20, 'bold'), bg='#f0f8ff', fg='#4682b4')
+        title_label = ttk.Label(self.main_frame, text="💧 Трекер воды", 
+                              font=('Arial', 20, 'bold'))
         title_label.pack(pady=20)
         
         # Current date
         today = datetime.date.today().strftime("%d.%m.%Y")
-        date_label = tk.Label(self.main_frame, text=f"Сегодня: {today}", 
-                             font=('Arial', 12), bg='#f0f8ff')
+        date_label = ttk.Label(self.main_frame, text=f"Сегодня: {today}", 
+                             font=('Arial', 12))
         date_label.pack(pady=5)
         
         # Progress bar
-        self.progress_frame = tk.Frame(self.main_frame, bg='#f0f8ff')
+        self.progress_frame = ttk.Frame(self.main_frame)
         self.progress_frame.pack(pady=20)
         
         self.progress_var = tk.DoubleVar()
@@ -149,45 +150,44 @@ class WaterTracker:
                                            variable=self.progress_var, maximum=100)
         self.progress_bar.pack()
         
-        self.progress_label = tk.Label(self.progress_frame, text="", 
-                                      font=('Arial', 12), bg='#f0f8ff')
+        self.progress_label = ttk.Label(self.progress_frame, text="", 
+                                      font=('Arial', 12))
         self.progress_label.pack(pady=5)
         
         # Water addition buttons
-        buttons_frame = tk.Frame(self.main_frame, bg='#f0f8ff')
+        buttons_frame = ttk.Frame(self.main_frame)
         buttons_frame.pack(pady=20)
         
         amounts = [100, 200, 250, 500]
         for amount in amounts:
-            btn = tk.Button(buttons_frame, text=f"+{amount} мл", 
+            btn = ttk.Button(buttons_frame, text=f"+{amount} мл", 
                           command=lambda a=amount: self.add_water(a),
-                          font=('Arial', 12), bg='#87ceeb', fg='white',
-                          padx=15, pady=5)
-            btn.pack(side='left', padx=5)
+                          font=('Arial', 12))
+            btn.pack(side='left')
         
         # Custom amount input
-        custom_frame = tk.Frame(self.main_frame, bg='#f0f8ff')
+        custom_frame = ttk.Frame(self.main_frame)
         custom_frame.pack(pady=10)
         
-        tk.Label(custom_frame, text="Другое количество:", 
-                font=('Arial', 10), bg='#f0f8ff').pack(side='left')
+        ttk.Label(custom_frame, text="Другое количество:", 
+                font=('Arial', 10)).pack(side='left')
         
-        self.custom_entry = tk.Entry(custom_frame, width=10, font=('Arial', 10))
-        self.custom_entry.pack(side='left', padx=5)
+        self.custom_entry = ttk.Entry(custom_frame, width=10, font=('Arial', 10))
+        self.custom_entry.pack(side='left')
         
-        custom_btn = tk.Button(custom_frame, text="Добавить", 
+        custom_btn = ttk.Button(custom_frame, text="Добавить", 
                               command=self.add_custom_water,
-                              font=('Arial', 10), bg='#4682b4', fg='white')
-        custom_btn.pack(side='left', padx=5)
+                              font=('Arial', 10))
+        custom_btn.pack(side='left')
         
         # Today's history
-        history_frame = tk.LabelFrame(self.main_frame, text="История за сегодня", 
-                                     font=('Arial', 12), bg='#f0f8ff')
-        history_frame.pack(pady=20, fill='both', expand=True, padx=20)
+        history_frame = ttk.LabelFrame(self.main_frame, text="История за сегодня", 
+                                     font=('Arial', 12))
+        history_frame.pack(pady=20, fill='both', expand=True)
         
         # Frame for history list and control buttons
-        history_content = tk.Frame(history_frame, bg='#f0f8ff')
-        history_content.pack(fill='both', expand=True, padx=5, pady=5)
+        history_content = ttk.Frame(history_frame)
+        history_content.pack(fill='both', expand=True)
         
         # Selectable history listbox
         self.history_listbox = tk.Listbox(history_content, font=('Arial', 10), height=8)
@@ -199,59 +199,59 @@ class WaterTracker:
         history_scrollbar.pack(side="right", fill="y")
         
         # History management buttons
-        history_buttons = tk.Frame(self.main_frame, bg='#f0f8ff')
+        history_buttons = ttk.Frame(self.main_frame)
         history_buttons.pack(pady=10)
         
-        edit_btn = tk.Button(history_buttons, text="Редактировать", 
+        edit_btn = ttk.Button(history_buttons, text="Редактировать", 
                            command=self.edit_selected_entry,
-                           font=('Arial', 10), bg='#FFA500', fg='white', padx=10)
-        edit_btn.pack(side='left', padx=5)
+                           font=('Arial', 10))
+        edit_btn.pack(side='left')
         
-        delete_btn = tk.Button(history_buttons, text="Удалить", 
+        delete_btn = ttk.Button(history_buttons, text="Удалить", 
                              command=self.delete_selected_entry,
-                             font=('Arial', 10), bg='#FF6B6B', fg='white', padx=10)
-        delete_btn.pack(side='left', padx=5)
+                             font=('Arial', 10))
+        delete_btn.pack(side='left')
         
-        clear_btn = tk.Button(history_buttons, text="Очистить всё за сегодня", 
+        clear_btn = ttk.Button(history_buttons, text="Очистить всё за сегодня", 
                             command=self.clear_today_history,
-                            font=('Arial', 10), bg='#DC143C', fg='white', padx=10)
-        clear_btn.pack(side='left', padx=5)
+                            font=('Arial', 10))
+        clear_btn.pack(side='left')
         
         # Initial display update
         self.update_display()
     
     def create_calendar_tab(self):
         """Create calendar tab"""
-        tk.Label(self.calendar_frame, text="📅 Календарь потребления воды", 
+        ttk.Label(self.calendar_frame, text="📅 Календарь потребления воды", 
                 font=('Arial', 16, 'bold')).pack(pady=20)
         
         # Month navigation
-        nav_frame = tk.Frame(self.calendar_frame)
+        nav_frame = ttk.Frame(self.calendar_frame)
         nav_frame.pack(pady=10)
         
         self.current_month = datetime.date.today().month
         self.current_year = datetime.date.today().year
         
-        tk.Button(nav_frame, text="<", command=self.prev_month).pack(side='left')
-        self.month_label = tk.Label(nav_frame, text="", font=('Arial', 12, 'bold'))
-        self.month_label.pack(side='left', padx=20)
-        tk.Button(nav_frame, text=">", command=self.next_month).pack(side='left')
+        ttk.Button(nav_frame, text="<", command=self.prev_month).pack(side='left')
+        self.month_label = ttk.Label(nav_frame, text="", font=('Arial', 12, 'bold'))
+        self.month_label.pack(side='left')
+        ttk.Button(nav_frame, text=">", command=self.next_month).pack(side='left')
         
         # Calendar canvas
-        self.calendar_canvas = tk.Canvas(self.calendar_frame, width=700, height=400, bg='white')
+        self.calendar_canvas = tk.Canvas(self.calendar_frame, width=700, height=400)
         self.calendar_canvas.pack(pady=20)
         
         self.update_calendar()
     
     def create_settings_tab(self):
         """Create settings tab"""
-        tk.Label(self.settings_frame, text="⚙️ Настройки", 
+        ttk.Label(self.settings_frame, text="⚙️ Настройки", 
                 font=('Arial', 16, 'bold')).pack(pady=20)
         
         # Create canvas for scrolling
-        canvas = tk.Canvas(self.settings_frame, bg='#f0f8ff')
+        canvas = tk.Canvas(self.settings_frame)
         scrollbar = ttk.Scrollbar(self.settings_frame, orient="vertical", command=canvas.yview)
-        scrollable_frame = ttk.Frame(canvas)
+        scrollable_frame = tttk.Frame(canvas)
         
         scrollable_frame.bind(
             "<Configure>",
@@ -262,96 +262,95 @@ class WaterTracker:
         canvas.configure(yscrollcommand=scrollbar.set)
         
         # Main settings
-        main_settings = tk.LabelFrame(scrollable_frame, text="Основные настройки", 
+        main_settings = ttk.LabelFrame(scrollable_frame, text="Основные настройки", 
                                      font=('Arial', 12, 'bold'))
-        main_settings.pack(pady=10, fill='x', padx=20)
+        main_settings.pack(pady=10, fill='x')
         
         # Daily goal
-        goal_frame = tk.Frame(main_settings)
-        goal_frame.pack(pady=10, fill='x', padx=10)
+        goal_frame = ttk.Frame(main_settings)
+        goal_frame.pack(pady=10, fill='x')
         
-        tk.Label(goal_frame, text="Дневная цель (мл):", font=('Arial', 12)).pack(side='left')
+        ttk.Label(goal_frame, text="Дневная цель (мл):", font=('Arial', 12)).pack(side='left')
         self.goal_var = tk.StringVar(value=str(self.daily_goal))
-        goal_entry = tk.Entry(goal_frame, textvariable=self.goal_var, width=10, font=('Arial', 12))
+        goal_entry = ttk.Entry(goal_frame, textvariable=self.goal_var, width=10, font=('Arial', 12))
         goal_entry.pack(side='right')
         
         # Reminder interval
-        reminder_frame = tk.Frame(main_settings)
-        reminder_frame.pack(pady=10, fill='x', padx=10)
+        reminder_frame = ttk.Frame(main_settings)
+        reminder_frame.pack(pady=10, fill='x')
         
-        tk.Label(reminder_frame, text="Интервал напоминаний (мин):", font=('Arial', 12)).pack(side='left')
+        ttk.Label(reminder_frame, text="Интервал напоминаний (мин):", font=('Arial', 12)).pack(side='left')
         self.reminder_var = tk.StringVar(value=str(self.reminder_interval))
-        reminder_entry = tk.Entry(reminder_frame, textvariable=self.reminder_var, width=10, font=('Arial', 12))
+        reminder_entry = ttk.Entry(reminder_frame, textvariable=self.reminder_var, width=10, font=('Arial', 12))
         reminder_entry.pack(side='right')
         
         # Notification settings
-        notifications_frame = tk.LabelFrame(scrollable_frame, text="Уведомления", 
+        notifications_frame = ttk.LabelFrame(scrollable_frame, text="Уведомления", 
                                           font=('Arial', 12, 'bold'))
-        notifications_frame.pack(pady=10, fill='x', padx=20)
+        notifications_frame.pack(pady=10, fill='x')
         
         # System notifications (Windows)
         self.notifications_var = tk.BooleanVar(value=self.notifications_enabled)
-        notifications_check = tk.Checkbutton(notifications_frame, 
+        notifications_check = ttk.Checkbutton(notifications_frame, 
                                            text="Системные уведомления Windows", 
                                            variable=self.notifications_var,
                                            font=('Arial', 11))
-        notifications_check.pack(pady=5, anchor='w', padx=10)
+        notifications_check.pack(pady=5, anchor='w')
         
         # Telegram notifications
         self.telegram_var = tk.BooleanVar(value=self.telegram_enabled)
-        telegram_check = tk.Checkbutton(notifications_frame, 
+        telegram_check = ttk.Checkbutton(notifications_frame, 
                                       text="Уведомления в Telegram", 
                                       variable=self.telegram_var,
                                       font=('Arial', 11))
-        telegram_check.pack(pady=5, anchor='w', padx=10)
+        telegram_check.pack(pady=5, anchor='w')
         
         # Bot token
-        token_frame = tk.Frame(notifications_frame)
-        token_frame.pack(pady=5, fill='x', padx=10)
+        token_frame = ttk.Frame(notifications_frame)
+        token_frame.pack(pady=5, fill='x')
         
-        tk.Label(token_frame, text="Токен бота:", font=('Arial', 10)).pack(anchor='w')
+        ttk.Label(token_frame, text="Токен бота:", font=('Arial', 10)).pack(anchor='w')
         self.token_var = tk.StringVar(value=self.telegram_bot_token)
-        token_entry = tk.Entry(token_frame, textvariable=self.token_var, 
+        token_entry = ttk.Entry(token_frame, textvariable=self.token_var, 
                              width=50, font=('Arial', 9), show='*')
-        token_entry.pack(fill='x', pady=2)
+        token_entry.pack(fill='x')
         
         # Chat ID
-        chat_frame = tk.Frame(notifications_frame)
-        chat_frame.pack(pady=5, fill='x', padx=10)
+        chat_frame = ttk.Frame(notifications_frame)
+        chat_frame.pack(pady=5, fill='x')
         
-        tk.Label(chat_frame, text="Chat ID:", font=('Arial', 10)).pack(anchor='w')
+        ttk.Label(chat_frame, text="Chat ID:", font=('Arial', 10)).pack(anchor='w')
         self.chat_var = tk.StringVar(value=self.telegram_chat_id)
-        chat_entry = tk.Entry(chat_frame, textvariable=self.chat_var, 
+        chat_entry = ttk.Entry(chat_frame, textvariable=self.chat_var, 
                             width=30, font=('Arial', 10))
-        chat_entry.pack(fill='x', pady=2)
+        chat_entry.pack(fill='x')
         
         # Telegram action buttons
-        telegram_buttons = tk.Frame(notifications_frame)
-        telegram_buttons.pack(pady=10, padx=10)
+        telegram_buttons = ttk.Frame(notifications_frame)
+        telegram_buttons.pack(pady=10)
         
-        test_btn = tk.Button(telegram_buttons, text="Тест уведомления", 
+        test_btn = ttk.Button(telegram_buttons, text="Тест уведомления", 
                            command=self.test_telegram,
-                           font=('Arial', 10), bg='#4CAF50', fg='white', padx=10)
-        test_btn.pack(side='left', padx=5)
+                           font=('Arial', 10))
+        test_btn.pack(side='left')
         
-        help_btn = tk.Button(telegram_buttons, text="Как настроить?", 
+        help_btn = ttk.Button(telegram_buttons, text="Как настроить?", 
                            command=self.show_telegram_help,
-                           font=('Arial', 10), bg='#2196F3', fg='white', padx=10)
-        help_btn.pack(side='left', padx=5)
+                           font=('Arial', 10))
+        help_btn.pack(side='left')
         
         # Save button
-        save_btn = tk.Button(scrollable_frame, text="Сохранить настройки", 
+        save_btn = ttk.Button(scrollable_frame, text="Сохранить настройки", 
                            command=self.save_settings_gui,
-                           font=('Arial', 12), bg='#4682b4', fg='white',
-                           padx=20, pady=10)
+                           font=('Arial', 12))
         save_btn.pack(pady=20)
         
         # Statistics frame
-        stats_frame = tk.LabelFrame(scrollable_frame, text="Статистика", font=('Arial', 12))
-        stats_frame.pack(pady=20, fill='both', expand=True, padx=20)
+        stats_frame = ttk.LabelFrame(scrollable_frame, text="Статистика", font=('Arial', 12))
+        stats_frame.pack(pady=20, fill='both', expand=True)
         
         self.stats_text = tk.Text(stats_frame, height=10, width=50, font=('Arial', 10))
-        self.stats_text.pack(fill='both', expand=True, padx=10, pady=10)
+        self.stats_text.pack(fill='both', expand=True)
         
         # Pack canvas and scrollbar
         canvas.pack(side="left", fill="both", expand=True)
@@ -790,7 +789,7 @@ class WaterTracker:
 
 if __name__ == "__main__":
     # Check and prompt for required dependencies
-    required_packages = ['plyer', 'requests']
+    required_packages = ['plyer', 'requests', 'sv_ttk']
     missing_packages = []
     
     for package in required_packages:

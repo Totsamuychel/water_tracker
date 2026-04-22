@@ -39,7 +39,7 @@ pip install -r requirements.txt
 ### 3. Run the App
 Launch the graphical interface:
 ```bash
-python water_tracker_.py
+python water_tracker.py
 ```
 
 ## 📱 Telegram Bot Setup
