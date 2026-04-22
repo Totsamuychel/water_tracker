@@ -1,3 +1,6 @@
-requests>=2.25.1
-plyer>=2.1.0
-sv-ttk>=2.6.0
+requests
+plyer
+sv-ttk
+pystray>=0.19.5
+Pillow>=10.0.0
+pyinstaller>=6.0.0
