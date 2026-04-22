@@ -1,92 +1,138 @@
-# 💧 Water Tracker (Трекер воды)
+# 💧 Water Tracker
 
-![Окно приложения](https://img.shields.io/badge/Python-3.8%2B-blue.svg) ![Tkinter](https://img.shields.io/badge/UI-Tkinter%20%2B%20sv__ttk-green.svg) ![SQLite](https://img.shields.io/badge/DB-SQLite-lightgrey.svg)
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)
+![UI](https://img.shields.io/badge/UI-Tkinter%20%2B%20sv__ttk-green.svg)
+![Database](https://img.shields.io/badge/DB-SQLite-lightgrey.svg)
+![Platform](https://img.shields.io/badge/Platform-Windows-blue.svg)
 
-**Water Tracker** — это легкое, современное и красивое Desktop-приложение для Windows, написанное на Python. Оно помогает следить за водным балансом организма, напоминает выпить воду и ведет подробную статистику вашего прогресса.
-
-## 🌟 Основные возможности
-
-1. **Главный трекер (Tracker)**:
-   - Плавная кольцевая анимация прогресса достижения дневной цели.
-   - Быстрое добавление воды кнопками-пресетами (100, 200, 250, 500 мл) или своими значениями.
-   - Управление историей за сегодня (изменение, удаление, очистка).
-   - Горячие клавиши (клавиши `1`, `2`, `3`, `4` на клавиатуре для быстрого добавления).
-
-2. **Календарь гидратации (Calendar)**:
-   - Наглядный интерактивный календарь по месяцам.
-   - Цветовая индикация дней (зеленый — цель достигнута, желтый — частично, красный — мало воды).
-
-3. **Расширенная статистика (Statistics)**:
-   - Столбчатая диаграмма выпитой воды за последние 7 дней (Canvas).
-   - Сводные карточки: "Дней подряд" (Streak), "Лучший день", "В среднем за месяц".
-   - Выгрузка (Экспорт) всех данных в `.csv` файл для Excel.
-
-4. **Умные уведомления (Smart Notifications)**:
-   - **Системный трей Windows**: при закрытии на крестик приложение сворачивается в трей (иконка возле часов). Оттуда можно быстро добавить 250/500 мл воды, не открывая окно!
-   - 3 режима уведомлений на выбор:
-     1. Всплывающее Windows уведомление.
-     2. Кастомное окно поверх всех окон с кнопками быстрого добавления.
-     3. **Telegram-бот**: напоминания прямо в телефон.
-
-5. **Идеальный UI/UX**:
-   - Красивая темная и светлая тема оформления (используется `sv_ttk`).
-   - Бесшовное растворение (Crossfade) при переключении темы!
-   - Локальная база SQLite спрятана в папке `data/`, ничего не захламляется.
+**Water Tracker** is a lightweight, modern and beautiful desktop application for Windows, written in Python. It helps you maintain healthy hydration habits by tracking your daily water intake, reminding you to drink at regular intervals, and showing detailed analytics of your progress over time.
 
 ---
 
-## 🛠 Технологии и Архитектура
+## 🌟 Features
 
-Проект переписан с монолита на модульную архитектуру:
-- `main.py` — Точка входа в приложение и настройка логирования.
-- `database.py` — Потокобезопасный `DatabaseManager` (SQLite).
-- `notifier.py` — Отдельный фоновый поток (Thread) для рассылки уведомлений, не зависающий основной UI.
-- `models.py` — Структуры данных (`dataclasses`) для типизации.
-- Каталог `ui/` — Разделенные модули пользовательского интерфейса (основной апп, вкладки, трей).
+### 💧 Tracker Tab
+- Smooth **animated circular progress ring** showing your daily goal completion.
+- Quick-add buttons for common amounts: **100 ml, 200 ml, 250 ml, 500 ml**.
+- Custom amount input for any value.
+- Keyboard shortcuts: press **`1` `2` `3` `4`** on the keyboard to instantly add water.
+- Full history management for today: **edit**, **delete**, or **clear all** records.
+- Emoji water level indicator: 🏜️ → 🥤 → 💧 → 🌊 → 🏆
+
+### 📅 Calendar Tab
+- Interactive **month-by-month calendar** showing your hydration history.
+- **Color-coded days**: green (goal reached), yellow (partially reached), red (below 50%), grey (no data).
+
+### 📊 Statistics Tab
+- **7-day bar chart** drawn with the built-in Tkinter Canvas — no external charting libraries needed.
+- **Summary cards**: current streak (days in a row), best day, and monthly average intake.
+- **Export to CSV** — one click to download all your data for use in Excel or Google Sheets.
+
+### 🔔 Smart Notifications
+- Background notification thread that never blocks the UI.
+- **3 notification modes** (configurable in Settings):
+  1. **Windows balloon** — standard OS desktop notification.
+  2. **Custom popup** — an always-on-top Tkinter window with one-click "+250 ml / +500 ml" buttons.
+  3. **Telegram bot** — reminders sent directly to your phone.
+- Automatically congratulates you when the daily goal is reached (once per day).
+- Reminder interval is applied **live** — no restart needed after changing it in Settings.
+
+### 🖥️ System Tray
+- Closing the window **minimizes the app to the system tray** (near the clock).
+- Right-click the tray icon to:
+  - Re-open the app.
+  - Quickly add **250 ml** or **500 ml** without opening the window.
+  - Quit the application completely.
+
+### 🌙 Themes
+- Toggle between a beautiful **Dark** and **Light** theme with one click.
+- Smooth **crossfade animation** when switching — the transition looks premium.
 
 ---
 
-## 🚀 Как использовать и запустить
+## 🏗️ Architecture
 
-### Способ 1: Готовый `.exe` файл (Без установки Python)
-Перейдите в раздел [Releases](https://github.com/Totsamuychel/water_tracker/releases) этого репозитория.
-Скачайте `WaterTracker.exe` и просто запустите его. Приложение полностью автономно!
+The project was fully refactored from a single monolithic script into a clean modular structure:
 
-### Способ 2: Запуск из исходного кода
-1. Клонируйте репозиторий:
+```
+water_tracker/
+├── main.py            # Entry point, logging setup
+├── database.py        # Thread-safe SQLite DatabaseManager
+├── notifier.py        # Background notification service (thread)
+├── models.py          # Typed dataclasses: WaterRecord, AppSettings
+├── build.spec         # PyInstaller build configuration
+├── build.bat          # One-click EXE builder script
+├── requirements.txt   # Python dependencies
+└── ui/
+    ├── app.py         # Main app window, tray logic, theme toggle
+    ├── tab_tracker.py # Tracker tab with animated canvas
+    ├── tab_calendar.py# Calendar tab with canvas drawing
+    ├── tab_stats.py   # Statistics tab with bar chart and CSV export
+    └── tab_settings.py# Settings tab
+```
+
+**Key design decisions:**
+- **Thread-safe SQLite**: every thread (UI, notifier) gets its own isolated database connection via `threading.local()`.
+- **Type hints** and `dataclasses` throughout the codebase.
+- Logging to `water_tracker.log` for easy debugging.
+- Database stored in a local `data/` folder, auto-created on first run.
+
+---
+
+## 🚀 Getting Started
+
+### Option 1: Download the ready-to-run `.exe`
+Go to the [Releases](https://github.com/Totsamuychel/water_tracker/releases) page and download `WaterTracker.exe`.
+Run it directly — **no Python installation required**.
+
+### Option 2: Run from source
+
+**1. Clone the repository:**
 ```bash
 git clone https://github.com/Totsamuychel/water_tracker.git
 cd water_tracker
 ```
-2. Установите зависимости в вашем виртуальном окружении:
+
+**2. Install dependencies** (a virtual environment is recommended):
 ```bash
 pip install -r requirements.txt
 ```
-3. Запустите точку входа:
+
+**3. Run the app:**
 ```bash
 python main.py
 ```
 
 ---
 
-## 📦 Сборка собственного `.exe`
+## 📦 Building the `.exe` yourself
 
-Если вы хотите сами скомпилировать проект в один исполняемый файл:
-1. Убедитесь, что установлен PyInstaller (`pip install pyinstaller`).
-2. Запустите скрипт сборки:
-   - В Windows двойным кликом по `build.bat`
-   - Или в терминале: `pyinstaller build.spec`
-3. Ваш готовый `.exe` появится в папке `dist/`.
+If you want to compile the app into a standalone executable:
+
+1. Make sure PyInstaller is installed: `pip install pyinstaller`
+2. Double-click `build.bat` **or** run in the terminal:
+   ```bash
+   pyinstaller build.spec
+   ```
+3. Your executable will appear in the `dist/` folder as `WaterTracker.exe`.
+4. It runs silently (no console window) and is fully self-contained.
 
 ---
 
-## 📱 Настройка Telegram Бота
-Чтобы получать напоминания на телефон:
-1. Найдите в Telegram бота **@BotFather** и отправьте команду `/newbot`.
-2. Скопируйте полученный **Bot Token**.
-3. Напишите вашему новому боту любое сообщение `Привет`.
-4. В браузере откройте: `https://api.telegram.org/bot<ВАШ_TOKEN>/getUpdates`
-5. Найдите в ответе `"chat":{"id":123456789}`. Это ваш Chat ID.
-6. Введите Token и Chat ID во вкладке "Настройки" внутри приложения и выберите тип уведомлений "Telegram".
+## 📱 Telegram Bot Setup
 
-> **Enjoy your hydration! 💧**
+To receive reminders on your phone:
+
+1. Open Telegram and find **@BotFather**. Send `/newbot` and follow the steps.
+2. Copy the **Bot Token** BotFather gives you.
+3. Send any message (e.g. "Hello") to your new bot.
+4. In your browser, open:
+   ```
+   https://api.telegram.org/bot<YOUR_TOKEN>/getUpdates
+   ```
+5. Find `"chat":{"id": 123456789}` in the response — that is your **Chat ID**.
+6. Paste the Token and Chat ID into the **Settings** tab of the app, select **Telegram** as the notification type, and save.
+
+---
+
+> **Stay hydrated! 💧**
