@@ -31,9 +31,9 @@
 ### 🔔 Smart Notifications
 - Background notification thread that never blocks the UI.
 - **3 notification modes** (configurable in Settings):
-  1. **Windows balloon** — standard OS desktop notification.
-  2. **Custom popup** — an always-on-top Tkinter window with one-click "+250 ml / +500 ml" buttons.
-  3. **Telegram bot** — reminders sent directly to your phone.
+   **Windows balloon** — standard OS desktop notification.
+   **Custom popup** — an always-on-top Tkinter window with one-click "+250 ml / +500 ml" buttons.
+   **Telegram bot** — reminders sent directly to your phone.
 - Automatically congratulates you when the daily goal is reached (once per day).
 - Reminder interval is applied **live** — no restart needed after changing it in Settings.
 
@@ -51,8 +51,6 @@
 ---
 
 ## 🏗️ Architecture
-
-The project was fully refactored from a single monolithic script into a clean modular structure:
 
 ```
 water_tracker/
