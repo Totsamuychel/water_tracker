@@ -9,6 +9,54 @@
 
 ---
 
+## 🏗️ Architecture
+
+```mermaid
+graph TD
+    A["🚀 main.py\nEntry point · logging setup"] --> B["🪩 ui/app.py\nMain Window · Theme toggle · Tray"]
+
+    B --> C["💧 tab_tracker.py\nAnimated ring · Quick-add\nHistory edit / delete"]
+    B --> D["📅 tab_calendar.py\nMonth calendar · Color-coded days"]
+    B --> E["📊 tab_stats.py\n7-day bar chart · Streak\nCSV export"]
+    B --> F["⚙️ tab_settings.py\nGoal · Interval · Theme\nNotification mode · Telegram"]
+
+    subgraph Data["🗄️ Data Layer"]
+        G["🗃️ database.py\nThread-safe SQLite\n(threading.local)"]
+        H["📝 models.py\nWaterRecord\nAppSettings dataclasses"]
+    end
+
+    C --> G
+    D --> G
+    E --> G
+    F --> G
+    B --> H
+
+    subgraph Notifications["🔔 Notification Service"]
+        I["🔁 notifier.py\nBackground thread\n(non-blocking)"] --> J{"Mode"}
+        J -- "Windows" --> K["🖔 OS Balloon\ndesktop toast"]
+        J -- "Custom" --> L["💻 Tkinter Popup\n+250 ml / +500 ml buttons"]
+        J -- "Telegram" --> M["📲 Telegram Bot API\nphone reminder"]
+    end
+
+    B --> I
+    F --> I
+
+    subgraph Tray["🗺️ System Tray (pystray)"]
+        N["Re-open window"]
+        O["Quick add 250 / 500 ml"]
+        P["Quit app"]
+    end
+
+    B --> Tray
+    O --> G
+
+    subgraph Build["📦 Build"]
+        Q["build.spec (PyInstaller)"] --> R["WaterTracker.exe\n(dist/)"]
+    end
+```
+
+---
+
 ## 🌟 Features
 
 ### 💧 Tracker Tab
@@ -32,7 +80,7 @@
 - Background notification thread that never blocks the UI.
 - **3 notification modes** (configurable in Settings):
    **Windows balloon** — standard OS desktop notification.
-   **Custom popup** — an always-on-top Tkinter window with one-click "+250 ml / +500 ml" buttons.
+   **Custom popup** — an always-on-top Tkinter window with one-click “+250 ml / +500 ml” buttons.
    **Telegram bot** — reminders sent directly to your phone.
 - Automatically congratulates you when the daily goal is reached (once per day).
 - Reminder interval is applied **live** — no restart needed after changing it in Settings.
@@ -50,7 +98,7 @@
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Project Structure
 
 ```
 water_tracker/
